@@ -2,7 +2,7 @@
 
 # Security Operations Center (SOC) Report: Development and Testing of Custom SIEM Correlation Rules
 
-**Report Date:** October 24, 2023  
+**Report Date:** 20 july,2026  
 **Prepared By:** SOC Detection Engineering Team  
 **SIEM Platform:** Elastic Stack (ELK) v8.x  
 **Objective:** To develop, implement, and test custom correlation rules for detecting Credential Stuffing, DNS Tunnelling, and PowerShell Exploitation, complete with simulation code and validation metrics.
